@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/artists.css">
+
+    <title>groupietrackers</title>
+</head>
+<body>
+    <div class="rectangle">
+        <div class="flex-container">
+            
+                <img src="{{.Artist.Image}}" alt="">
+                
+                <div class="name">   
+                   <br> 
+                -{{.Artist.Name}}-
+                </div>
+                        <div class="info">
+                            <div class="date">
+                                <br>
+                            <p1>Creation Date:{{.Artist.CreationDate}}</p1>
+                            </div>
+                            <div class="Album">
+                                <br>
+                                <p1>First album was realesed:{{.Artist.FirstAlbum}}</p1>
+                                <br>
+                            </div>
+                            
+                            <div class="members">
+                                <br>
+                                <p1>Members:</p1>
+                                {{range .Artist.Members}}
+                                    <p>{{.}}</p>
+                                    {{end}}
+                                    ----------
+                                    <br> 
+                                    <p1>Concert Dates</p1>
+                                    <br>
+                                    ----------
+                                    <br> 
+                                   {{ range $i, $e := .RelationStruct.DatesLocations}} 
+                                   <br> {{$i}}
+                                   <br>                            
+                                        <br>{{range $e}} - {{.}} - {{end}}  
+                                        <br>                                                                 
+                                   {{end}}
+                            </div>
+                            
+            </div>
+        </div>
+        </div>
+
+        </div>
+
+    </div>
+</body>
+</html>

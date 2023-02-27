@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <link rel="stylesheet" href="/assets/search.css">
+    <title>groupietracker</title>
+</head>
+<body> 
+    <div class="container1">
+        <div class="searchbar"></div>
+        <div class="rectangle">
+            <div class="container">
+                {{if .}}
+                {{ range .}}
+                <a href="/artists/?id={{.ID}}" class="square_link">
+                <div class="square">
+                        <div class="square_img">
+                         <img src="{{.Image}}">
+                        </div>
+                        <div class="square_name">
+                            <h2>{{.Name}}</h2>
+                         </div>
+                        </div>
+                    </a>
+                    {{end}}
+            </div>
+            {{else}}
+            <h3 class="nothingFound">Nothing Found</h3>
+            {{end}}
+        </div>
+    </div>   
+    <div>
+        <form action="/" class="return">
+            <input type="submit" value="Go to back" />
+        </form>
+    </div>
+</body>
+</html>

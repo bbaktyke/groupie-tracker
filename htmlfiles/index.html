@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <link rel="stylesheet" href="/assets/index.css">
+    <title>groupietracker</title>
+    
+</head>
+<body>
+  <div class="container1">
+    <div class="searchbar">
+      <form action="/search" autocomplete="off" method="get">
+        <i class="fas fa-search"></i>
+        <input list="search" id="Search" name="Search" placeholder="Search..." required/>
+        <button type="submit" class="button">Submit</button>
+    
+        <datalist id="search">
+        {{range .Everyone}}
+            <option value="{{.Name}} - Artist/Band"></option>
+            {{end}}
+        {{range .Everyone}}
+        {{range .Members}}
+            <option value="{{.}} - Member"></option>
+            {{end}}
+        {{end}}
+        {{range .Location.Ind}}
+        {{range .Locations}}
+        <option value="{{.}} - Location"></option>
+        {{end}}
+        {{end}}
+        {{range .Everyone}}
+        <option value="{{.FirstAlbum}} - First Album"></option>
+        {{end}}
+        {{range .Everyone}}
+        <option value="{{.CreationDate}} - Creation Date"></option>
+        {{end}}
+        
+      </datalist>
+    </form>
+    <div class="TEST button" >
+      <img src="https://icones.pro/wp-content/uploads/2021/03/icone-de-parametres-et-de-parametres-bleue.png" alt="">
+      Filters
+    </div>
+    <div class="slidecontainer">
+        <br>
+        <p1> Creation Date</p1>
+        <br>
+        <form action="/filter" autocomplete="off" method="get">
+        <input type="range" min="1958" max="2015" value="1958" class="slider" id="myRange" name="slider">
+        <p>Value: <span id="demo"></span></p>
+        <div>
+            <br>
+            <p1> Number of members</p1>
+            <br>
+            <div><input type="checkbox" name="position" value="1" id="1"><label for="1">1</label></div>
+            <div><input type="checkbox" name="position" value="2" id="2"><label for="2">2</label></div>
+            <div><input type="checkbox" name="position" value="3" id="3"><label for="3">3</label></div>
+            <div><input type="checkbox" name="position" value="4" id="4"><label for="4">4</label></div>
+            <div><input type="checkbox" name="position" value="5" id="5"><label for="5">5</label></div>
+            <div><input type="checkbox" name="position" value="6" id="6"><label for="6">6</label></div>
+            <div><input type="checkbox" name="position" value="7" id="7"><label for="7">7</label></div>
+          </div>
+          <br>
+          <p>Concert locations</p>
+          <br>
+          <select name="select">
+            <option value=""></option>
+            {{range .Location.Ind}}
+                {{range .Locations}}
+                <option value="{{.}}">{{.}}</option>
+                {{end}}
+            {{end}}
+          </select>
+          <br>
+          <br>
+          <p1> First Album Year</p1>
+          <br>
+          <div class="range_container">
+            <div class="sliders_control">
+                <input id="fromSlider" type="range" value="1958" min="1958" max="2020" name="range1"/>
+                <input id="toSlider" type="range" value="2020" min="1970" max="2020" name="range2"/>
+               
+            </div>
+            <div class="form_control">
+                <div class="form_control_container">
+                    <div class="form_control_container__time">Min</div>
+                    <input class="form_control_container__time__input" type="number" id="fromInput" value="1958" min="1958" max="2020"/>
+                </div>
+                <div class="form_control_container">
+                    <div class="form_control_container__time">Max</div>
+                    <input class="form_control_container__time__input" type="number" id="toInput" value="2020" min="1958" max="2020"/>
+                </div>
+            </div>
+        </div>
+        <br>
+        <button type="submit" class="button">Filter</button>
+        </form>
+      </div>
+
+
+
+  </div>  
+    <div class="rectangle">
+        <div class="container">
+            {{ range .Everyone}}
+            <a href="/artists/?id={{.ID}}" class="square_link">
+            <div class="square">
+                    <div class="square_img">
+                     <img src="{{.Image}}">
+                    </div>
+                    <div class="square_name">
+                        <h2>{{.Name}}</h2>
+                     </div>
+                    </div>
+                </a>
+                {{end}}
+        </div>
+    </div>
+  </div>
+
+
+
+  <script>
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("demo");
+    output.innerHTML = slider.value;
+    
+    slider.oninput = function() {
+      output.innerHTML = this.value;
+    }
+
+    let test = document.querySelector(".TEST")
+    let cd =document.querySelector(".slidecontainer")
+    test.addEventListener("click", ()=> {
+      cd.classList.toggle("active")
+    })
+    </script>
+    
+    <script>
+            function controlFromInput(fromSlider, fromInput, toInput, controlSlider) {
+          const [from, to] = getParsed(fromInput, toInput);
+          fillSlider(fromInput, toInput, '#C6C6C6', '#25daa5', controlSlider);
+          if (from > to) {
+              fromSlider.value = to;
+              fromInput.value = to;
+          } else {
+              fromSlider.value = from;
+          }
+      }
+          
+      function controlToInput(toSlider, fromInput, toInput, controlSlider) {
+          const [from, to] = getParsed(fromInput, toInput);
+          fillSlider(fromInput, toInput, '#C6C6C6', '#25daa5', controlSlider);
+          setToggleAccessible(toInput);
+          if (from <= to) {
+              toSlider.value = to;
+              toInput.value = to;
+          } else {
+              toInput.value = from;
+          }
+      }
+
+      function controlFromSlider(fromSlider, toSlider, fromInput) {
+        const [from, to] = getParsed(fromSlider, toSlider);
+        fillSlider(fromSlider, toSlider, '#C6C6C6', '#25daa5', toSlider);
+        if (from > to) {
+          fromSlider.value = to;
+          fromInput.value = to;
+        } else {
+          fromInput.value = from;
+        }
+      }
+
+      function controlToSlider(fromSlider, toSlider, toInput) {
+        const [from, to] = getParsed(fromSlider, toSlider);
+        fillSlider(fromSlider, toSlider, '#C6C6C6', '#25daa5', toSlider);
+        setToggleAccessible(toSlider);
+        if (from <= to) {
+          toSlider.value = to;
+          toInput.value = to;
+        } else {
+          toInput.value = from;
+          toSlider.value = from;
+        }
+      }
+
+      function getParsed(currentFrom, currentTo) {
+        const from = parseInt(currentFrom.value, 10);
+        const to = parseInt(currentTo.value, 10);
+        return [from, to];
+      }
+
+      function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
+          const rangeDistance = to.max-to.min;
+          const fromPosition = from.value - to.min;
+          const toPosition = to.value - to.min;
+          controlSlider.style.background = `linear-gradient(
+            to right,
+            ${sliderColor} 0%,
+            ${sliderColor} ${(fromPosition)/(rangeDistance)*100}%,
+            ${rangeColor} ${((fromPosition)/(rangeDistance))*100}%,
+            ${rangeColor} ${(toPosition)/(rangeDistance)*100}%, 
+            ${sliderColor} ${(toPosition)/(rangeDistance)*100}%, 
+            ${sliderColor} 100%)`;
+      }
+
+      function setToggleAccessible(currentTarget) {
+        const toSlider = document.querySelector('#toSlider');
+        if (Number(currentTarget.value) <= 0 ) {
+          toSlider.style.zIndex = 2;
+        } else {
+          toSlider.style.zIndex = 0;
+        }
+      }
+
+      const fromSlider = document.querySelector('#fromSlider');
+      const toSlider = document.querySelector('#toSlider');
+      const fromInput = document.querySelector('#fromInput');
+      const toInput = document.querySelector('#toInput');
+      fillSlider(fromSlider, toSlider, '#C6C6C6', '#25daa5', toSlider);
+      setToggleAccessible(toSlider);
+
+      fromSlider.oninput = () => controlFromSlider(fromSlider, toSlider, fromInput);
+      toSlider.oninput = () => controlToSlider(fromSlider, toSlider, toInput);
+      fromInput.oninput = () => controlFromInput(fromSlider, fromInput, toInput, toSlider);
+      toInput.oninput = () => controlToInput(toSlider, fromInput, toInput, toSlider);
+    </script>
+
+</body>
+</html>
